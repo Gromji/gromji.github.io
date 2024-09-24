@@ -1,0 +1,45 @@
+---
+layout: default
+---
+{{ content }}
+
+{% assign posts_count = paginator.posts | size %}
+{% if posts_count > 0 %}
+<h1>Posts</h1>
+<div class="post-links">
+  {% for post in paginator.posts %}
+  {% if post.exclude == false %}
+  <div class="post-link-wrapper">
+    <div class="post-meta">
+      {% if site.dash.date_format %}
+      {{ post.date | date: site.dash.date_format }}
+      {% else %}
+      {{ post.date | date: "%b %-d, %Y" }}
+      {% endif %}
+
+    </div>
+    <a href="{{ post.url | relative_url }}" class="post-link">{{ post.title }}</a>
+
+    {% if post.description != null %}
+    <div class="post-excerpt">
+      <i>{{ post.description }}</i>
+    </div>
+    {% endif %}
+    {% if site.plugins contains "jekyll/tagging" %}
+    <div class="post-tags">
+      {% for tag in post.tags %}
+      <a class="tag" href="{{ tag | tag_url }}">{{ tag }}</a>
+      {% endfor %}
+    </div>
+    {% endif %}
+  </div>
+  {% endif %}
+  {% endfor %}
+</div>
+
+{% include pagination.html %}
+
+{% include tagcloud.html %}
+{% else %}
+<h2>No posts to show.</h2>
+{% endif %}

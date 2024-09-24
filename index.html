@@ -1,0 +1,17 @@
+---
+layout: home
+---
+
+{% for obj in site.content %}
+{% assign rel_ = obj.rel %}
+{% assign url_ = obj.url %}
+<a style="text-decoration: none;" href="{{ rel_ | relative_url }}">
+  <div class=" icon-box">
+    {% if local %}
+    <img src="{{ url_ | relative_url }}" class="icon" alt="Icon" />
+    {% else %}
+    <img src="{{ url_ }}" class="icon" alt="Icon" />
+    {% endif %}
+  </div>
+</a>
+{% endfor %}
