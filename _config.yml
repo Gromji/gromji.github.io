@@ -21,8 +21,8 @@
 title: Gromji
 email: gromjipwn@gmail.com
   
-baseurl: "/pwn" # the subpath of your site, e.g. /blog
-url: "http://gromji.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+# baseurl: "/pwn" # the subpath of your site, e.g. /blog
+# url: "http://gromji.github.io" # the base hostname & protocol for your site, e.g. http://example.com
 
 twitter_username: Gromjii
 github_username: Gromji
