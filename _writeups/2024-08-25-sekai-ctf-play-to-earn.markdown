@@ -3,7 +3,7 @@ layout: post
 title:  "Play to Earn"
 date:   2024-08-25 14:21:29 -0700
 description: Can you recover the burnt tokens?
-tags: SekaiCTF Blockchain
+tags: SekaiCTF Blockchain Writeup
 exclude: false
 ---
 

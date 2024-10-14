@@ -404,6 +404,8 @@ html.direction--rtl {
 .spoiler-container {
   position: relative;
   display: flex;
+  width: fit-content;
+  height: fit-content;
 }
 
 .spoiler-text {

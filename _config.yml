@@ -68,11 +68,11 @@ content:
   - local: false
     url: https://github.com/Gromji.png
     rel: /about    
-  - local: false
-    url: https://github.com/Gromji.png
+  - local: true
+    url: assets/images/book.jpg
     rel: /posts   
-  - local: false
-    url: https://github.com/Gromji.png
+  - local: true
+    url: assets/images/writeup.jpg
     rel: /writeups     
 
 dash:
