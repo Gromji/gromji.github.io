@@ -4,7 +4,7 @@ title: About
 permalink: /about/
 ---
 
-![alt text](/assets/images/peepoHappyL3ak.png "Very cool description")
+![Very cool description](/assets/images/peepoHappyL3ak.png)
 
 **Greetings, purpose of this page is to tell you little bit about myself.**
 
