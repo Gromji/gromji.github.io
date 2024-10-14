@@ -4,7 +4,7 @@ title: About
 permalink: /about/
 ---
 
-![Very cool description]({{ /assets/images/peepoHappyL3ak.png | relative_url }})
+![Very cool description]({{ "/assets/images/peepoHappyL3ak.png" | relative_url }})
 
 **Greetings, purpose of this page is to tell you little bit about myself.**
 
