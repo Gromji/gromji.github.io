@@ -81,8 +81,8 @@ dash:
   github_username: "Gromji"
   
   social_links:
-    - url: https://twitter.com/Gromjii
-      icon: twitter
+    - url: https://x.com/Gromjii
+      icon: x-twitter
       color: cyan
     - url: https://github.com/Gromji
       icon: github

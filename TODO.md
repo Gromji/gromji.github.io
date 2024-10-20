@@ -1,2 +1,1 @@
-- Align footer and tags bottom
 - Possibly change visual of tag
