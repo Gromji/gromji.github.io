@@ -3,7 +3,7 @@ layout: post
 title:  Preservation
 date:   2024-10-19 -0700
 description: Ethernaut - Preservation
-tags: [Ethernaut, High Level Writeup]
+tags: [Ethernaut, Blockchain, High Level Writeup]
 exclude: false
 ---
 
