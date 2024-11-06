@@ -1,1 +1,2 @@
 - Possibly change visual of tag
+- Add Google Analytics
