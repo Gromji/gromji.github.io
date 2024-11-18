@@ -530,7 +530,7 @@ html.direction--rtl {
     margin-left: 0;
 
     &:before {
-      content: $icon-check;
+      content: $icon-list-dot;
       @include font-awesome-icon;
       margin-right: 0.5em;
     }
