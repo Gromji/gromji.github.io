@@ -8,7 +8,7 @@ exclude: false
 ---
 
 <div class="spoiler-container">
-  <div>Hint:&nbsp;<span class="spoiler-text">Surely nothing can go wrong by reusing IV in CBC mode?</span></div>
+  <div>Hint:&nbsp;<span class="spoiler-text">Surely, nothing can go wrong by reusing IV in CBC mode?</span></div>
 </div>
 
 ### Challenge overview
@@ -40,7 +40,7 @@ Let's say we have encryption of \
 \
 If before the encryption secret value (*Cookie* in this case) is appended message becomes \
 \
-`AAAAAAAAAAAAAAA**X** (where **X** is the first byte of *Cookie*)` \
+`AAAAAAAAAAAAAAAX` (where **X** is the first byte of *Cookie*) \
 \
 Since the challenge gives us the encryption of said message now we can iterate over all possible bytes \
 \
