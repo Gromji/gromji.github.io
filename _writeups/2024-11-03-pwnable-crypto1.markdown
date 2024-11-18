@@ -38,7 +38,7 @@ Let's say we have encryption of \
 \
 `AAAAAAAAAAAAAAA (15 "A"s)` \
 \
-If before the encryption secret value (*Cookie* in this case) is appended message becomes \
+If before the encryption, secret value (*Cookie* in this case) is appended message becomes \
 \
 `AAAAAAAAAAAAAAAX` (where **X** is the first byte of *Cookie*) \
 \
