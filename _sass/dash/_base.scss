@@ -183,7 +183,27 @@ code {
     color: $color-foreground;
   }
 
-  border: 1px solid rgba(113, 116, 130, 0.5);
+  border: 2px solid rgba(113, 116, 130, 0.5);
+}
+
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: #000000;
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: linear-gradient(45deg, #4c4a4a, #373333);
+  border-radius: 3px;
+}
+
+
+::-webkit-scrollbar-thumb:hover {
+  background: linear-gradient(45deg, #4b4a4a, #4d4b4c);
+  border-radius: 3px;
 }
 
 code {

@@ -17,8 +17,8 @@ There really isn't much that can be done when interacting with this contract. We
 
 ```solidity
 function claimLeadership() public {
-    if (treasury > 255) commander = msg.sender;
-    else revert("Only members of the Higher Order can become Commander");
+  if (treasury > 255) commander = msg.sender;
+  else revert("Only members of the Higher Order can become Commander");
 }
 ```
 
@@ -26,9 +26,9 @@ This leaves us with only one option, to try and somehow exploit `registerTreasur
 
 ```solidity
 function registerTreasury(uint8) public {
-    assembly {
-        sstore(treasury_slot, calldataload(4))
-    }
+  assembly {
+      sstore(treasury_slot, calldataload(4))
+  }
 }
 ```
 
