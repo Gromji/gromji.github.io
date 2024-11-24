@@ -11,7 +11,7 @@ exclude: false
   <div>Hint:&nbsp;<span class="spoiler-text">Surely, nothing can go wrong by reusing IV in CBC mode?</span></div>
 </div>
 
-### Challenge overview
+## Challenge overview
 
 This challenge implements a log in system in which we are asked to give `ID` and `PW`. Apart from all of this, it stores three variables: *Key*, *IV* and *Cookie*.
 
@@ -28,7 +28,7 @@ After encrypting (*ID*, *PW*, *Cookie*) triplet, server decrypts this message (o
 hashlib.sha256(id+cookie).hexdigest() == pw and id == 'admin'
 ```
 
-### Leaking the Cookie
+## Leaking the Cookie
 
 Obviously, we want to login as admin to get the flag, but to do so we need to know what cookies is. If we somehow get the value of cookie variable then we can just send admin as *ID* and *SHA256* hash of *ID + Cookie* and we will login as admin and therefore get the flag.
 

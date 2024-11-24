@@ -7,11 +7,11 @@ tags: [Ethernaut, Blockchain, Writeup]
 exclude: false
 ---
 
-### Challenge overview
+## Challenge overview
 
 Challenge provides a contract called `HigherOrder` and gives us a goal to claim the title of the commander. In order to do that we must make `treasury` variable greater than `255`.
 
-### Looking for Vulnerabilities
+## Looking for Vulnerabilities
 
 There really isn't much that can be done when interacting with this contract. We can qury the variables (which gives us nothing) or we can call one of two existing functions. We are initially unable to call `claimLeadership` because it checks that `treasury` is greater than `255` (which it initially is not).
 

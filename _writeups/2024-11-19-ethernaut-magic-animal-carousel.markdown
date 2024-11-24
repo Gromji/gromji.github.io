@@ -7,7 +7,7 @@ tags: [Ethernaut, Blockchain, Writeup]
 exclude: false
 ---
 
-### Challenge overview
+## Challenge overview
 
 Challenge gives us a smart contract which has three functions: `setAnimalAndSpin`, `changeAnimal` and `encodeAnimalName`. Main functionality of the contract is that it tries to compact animal name, next index and animal owner into one slot. It does so by extracting/setting specific bits in each slot.
 
@@ -15,7 +15,7 @@ In my opinion, goal of the challenge seems a little bit blurry. Rule says that i
 
 In reality, we have to make it so that if `setAnimalAndSpin` is called with a specific animal name and then queried the same animal, returned value should have different animal name from what was initially passed as an argument.
 
-### Exploitation
+## Exploitation
 
 After understanding what the goal is, exploitation is not that complex. Let's take a look at the following function:
 
@@ -34,7 +34,7 @@ function setAnimalAndSpin(string calldata animal) external {
 
 Here we can see that `nextCrateId` is extracted form the slot corresponding to `currentCrateId` and then slot corresponding to `nextCrateId` is being set. Now the assumption when calculating `carousel[nextCrateId] & ~NEXT_ID_MASK` is that `carousel[nextCrateId]` is zero. If we manage to break that assumption, whenever someone tries to set animal and sping the animal, name will get xord with some value. We can easily break this assumption by calling `changeAnimal` on whatever `nextCrateId` will be.
 
-### Extra Remarks
+## Extra Remarks
 
 ```solidity
 function changeAnimal(string calldata animal, uint256 crateId) external {
