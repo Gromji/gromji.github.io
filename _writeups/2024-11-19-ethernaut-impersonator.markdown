@@ -33,7 +33,7 @@ function _isValidSignature(uint8 v, bytes32 r, bytes32 s) internal returns (addr
 }
 ```
 
-We can see that it tries to recover public key of the signer from `msgHash`, `v`, `r`, `s` values. We can easily find all of these through just querying for the values and looking for events in logs. That means we have one valid signature for `msgHash`. But what can we do if the contract makes sure we don't reuse signatures? If we understand how *ECDSA* works, we will find out that signature verification is **malleable**. This means that we can tweak retrieved signature to forge a new **valid** one. How *ECDSA* works is easily searchable online and if one follows trough with the math, they will find that if `(r, s)` is a valid signature so will be `(r, -s mod n)`.
+We can see that it tries to recover public key of the signer from `msgHash`, `v`, `r`, `s` values. We can easily find all of these through just querying for the values and looking for events in logs. That means we have one valid signature for `msgHash`. But what can we do if the contract makes sure we don't reuse signatures? If we understand how *ECDSA* works, we will find out that signature verification is **malleable**. This means that we can tweak retrieved signature to forge a new **valid** one. How *ECDSA* works is easily searchable online and if one follows through with the math, they will find that if `(r, s)` is a valid signature so will be `(r, -s mod n)`.
 
 ## Exploitation
 
