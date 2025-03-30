@@ -8,7 +8,7 @@ exclude: false
 ---
 
 <div class="spoiler-container">
-  <div>Hint:&nbsp;<span class="spoiler-text">Surely, nothing can go wrong by reusing IV in CBC mode?</span></div>
+  <div>Hint:&nbsp;<span class="spoiler-text">Surely, nothing can go wrong by reusing IV in CBC mode.</span></div>
 </div>
 
 ## Challenge overview
