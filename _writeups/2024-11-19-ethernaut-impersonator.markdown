@@ -47,4 +47,4 @@ function changeController(uint8 v, bytes32 r, bytes32 s, address newController) 
 }
 ```
 
-But the trick is that, we have to set it to a value which makes sure that **anyone** can open the door. Meaning that, even given a baldy formed signature triplet `(v, r, s)`, they should be able to open the door. The way we can exploit it is described [here]({{ site.baseurl }}/writeups/2024-08-25-sekai-ctf-play-to-earn)!
+But the trick is that, we have to set it to a value which makes sure that **anyone** can open the door. Meaning that, even given a baldy formed signature triplet `(v, r, s)`, they should be able to open the door. The way we can exploit it is described [here]({{ site.baseurl }}/writeups/2024-08-25-sekai-ctf-2024-play-to-earn)!
