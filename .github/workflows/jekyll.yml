@@ -52,8 +52,6 @@ jobs:
         uses: actions/upload-pages-artifact@v3
         with:
           path: ./_site
-      - name: List site folder
-        run: ls -R _site
 
   deploy:
     needs: build
@@ -64,7 +62,6 @@ jobs:
       
     environment:
       name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
 
     runs-on: ubuntu-latest
     steps:
