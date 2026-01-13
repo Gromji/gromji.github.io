@@ -70,8 +70,9 @@ content:
     url: https://github.com/Gromji.png
     rel: /about    
   - local: true
-    url: assets/images/career.jpg
-    rel: /career   
+    url: assets/images/resume.jpg
+    rel: /resume   
+    label: Résumé
   - local: true
     url: assets/images/book.jpg
     rel: /posts   

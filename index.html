@@ -6,7 +6,7 @@ layout: home
 {% assign local = obj.local %}
 {% assign rel_ = obj.rel %}
 {% assign url_ = obj.url %}
-{% assign label = rel_ | replace: '/', '' | replace: '-', ' ' | capitalize %}
+{% assign label = obj.label | default: rel_ | replace: '/', '' | replace: '-', ' ' | capitalize %}
 <a style="text-decoration: none;" href="{{ rel_ | relative_url }}">
   <div class=" icon-box">
     {% if local %}

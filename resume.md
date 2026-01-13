@@ -1,7 +1,7 @@
 ---
 layout: page
-title: Career
-permalink: /career/
+title: Résumé
+permalink: /resume/
 ---
 
 # Career
