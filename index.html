@@ -3,15 +3,18 @@ layout: home
 ---
 
 {% for obj in site.content %}
+{% assign local = obj.local %}
 {% assign rel_ = obj.rel %}
 {% assign url_ = obj.url %}
+{% assign label = rel_ | replace: '/', '' | replace: '-', ' ' | capitalize %}
 <a style="text-decoration: none;" href="{{ rel_ | relative_url }}">
   <div class=" icon-box">
     {% if local %}
-    <img src="{{ url_ | relative_url }}" class="icon" alt="Icon" />
+    <img src="{{ url_ | relative_url }}" class="icon" alt="{{ label }} image" />
     {% else %}
-    <img src="{{ url_ }}" class="icon" alt="Icon" />
+    <img src="{{ url_ }}" class="icon" alt="{{ label }} image" />
     {% endif %}
+    <div class="icon-label">{{ label }}</div>
   </div>
 </a>
 {% endfor %}

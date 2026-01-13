@@ -424,18 +424,23 @@ html.direction--rtl {
 
 .icon-box {
   margin-bottom: 1em;
+  margin-right: 0.8em;
   text-align: left;
   min-height: 72px;
   font-style: italic;
   display: inline-flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 
   &>.description {
     flex: 8;
   }
 
   &>.icon {
-    margin-right: 1em;
-    width: 72px;
+    margin-right: 0;
+    margin-bottom: 0.35em;
+    width: 96px;
     height: 100%;
     border-radius: 0.3em;
     flex: 1;
@@ -443,6 +448,12 @@ html.direction--rtl {
 
   &>.icon:hover {
     filter: brightness(50%)
+  }
+
+  .icon-label {
+    font-style: normal;
+    font-weight: 600;
+    text-align: center;
   }
 }
 

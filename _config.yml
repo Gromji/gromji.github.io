@@ -20,9 +20,10 @@
 
 title: Gromji
 email: gromjipwn@gmail.com
-  
+
 baseurl: "" # the subpath of your site, e.g. /blog
-url: "http://gromji.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+url: "https://gromji.github.io" # the base hostname & protocol for your site, e.g. http://example.com
+google_tag_id: G-DJQZXDK9LN
 
 twitter_username: Gromjii
 github_username: Gromji
@@ -69,6 +70,9 @@ content:
     url: https://github.com/Gromji.png
     rel: /about    
   - local: true
+    url: assets/images/career.jpg
+    rel: /career   
+  - local: true
     url: assets/images/book.jpg
     rel: /posts   
   - local: true
@@ -87,6 +91,10 @@ dash:
     - url: https://github.com/Gromji
       icon: github
       color: purple
+    - url: https://linktr.ee/gromji
+      fa: false
+      icon: linktree
+      color: yellow
     - url: https://ctftime.org/team/220336/
       fa: true
       icon: flag

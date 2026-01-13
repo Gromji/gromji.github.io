@@ -13,9 +13,9 @@ exclude: false
 
 ## Challenge overview
 
-This challenge implements a log in system in which we are asked to give `ID` and `PW`. Apart from all of this, it stores three variables: *Key*, *IV* and *Cookie*.
+This challenge implements a login system in which we are asked to give `ID` and `PW`. In addition, it stores three variables: *Key*, *IV*, and *Cookie*.
 
-*Key* and *IV* are used to encrypt/decrypt messages using **AES CBC mode**. We can see how this mode works by looking at the picture below.
+*Key* and *IV* are used to encrypt/decrypt messages using **AES CBC mode**. We can see how this mode works by looking at the diagrams below.
 
 <div style="background-color: white;">
 <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/8/80/CBC_encryption.svg/2560px-CBC_encryption.svg.png" alt="AES CBC mode encryption" title="AES CBC mode encryption">
@@ -30,20 +30,20 @@ hashlib.sha256(id+cookie).hexdigest() == pw and id == 'admin'
 
 ## Leaking the Cookie
 
-Obviously, we want to login as admin to get the flag, but to do so we need to know what cookies is. If we somehow get the value of cookie variable then we can just send admin as *ID* and *SHA256* hash of *ID + Cookie* and we will login as admin and therefore get the flag.
+Obviously, we want to log in as admin to get the flag, but to do so we need to know what *Cookie* is. If we get the value of the cookie variable, we can just send admin as *ID* and the *SHA256* hash of *ID + Cookie*, log in as admin, and grab the flag.
 
-Now the question is, how do we get the *Cookie*? Let's think about what flaws this encryption system has. Immediatley, we can see that *IV* is never randomly generated which it should be. Since it is not, same plaintext will give us same cipertext everytime. The way we can abuse this is to leak *Cookie* values byte by byte in a following manner (I'll explain this in general so that at least I don't spoil little details of the challenge):
+Now the question is, how do we get the *Cookie*? Let's think about what flaws this encryption system has. Immediately, we can see that the *IV* is never randomly generated, which it should be. Since it is not, the same plaintext will give us the same ciphertext every time. We can abuse this to leak *Cookie* values byte by byte in the following manner (I'll explain this in general so I don't spoil the little details of the challenge):
 
 Let's say we have encryption of \
 \
 `AAAAAAAAAAAAAAA (15 "A"s)` \
 \
-If before the encryption, secret value (*Cookie* in this case) is appended message becomes \
+If, before encryption, the secret value (*Cookie* in this case) is appended, the message becomes \
 \
 `AAAAAAAAAAAAAAAX` (where **X** is the first byte of *Cookie*) \
 \
-Since the challenge gives us the encryption of said message now we can iterate over all possible bytes \
+Since the challenge gives us the encryption of this message, we can iterate over all possible bytes \
 \
 `1234567890abcdefghijklmnopqrstuvwxyz-_` \
 \
-and test if encryption of our initial input plus the byte that we are testing is the same as the input plus one byte of the *Cookie*. This way we can leak *Cookie* byte by byte and therefore get the flag.
+and test whether the encryption of our initial input plus the byte we are testing matches the input plus one byte of the *Cookie*. This way we can leak *Cookie* byte by byte and get the flag.

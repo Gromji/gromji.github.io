@@ -11,38 +11,38 @@ exclude: false
   <div>Hint:&nbsp;<span class="spoiler-text">Check out ecrecover!</span></div>
 </div>
 
-We are given three files ArcadeMachine.sol, Coin.sol and Setup.sol. As it can be seen from the Setup contract, we need at least 13.37 ether to get the flag. What can be seen from the constructor is that 19 of the 20 ether gets deposited by the Setup contract. Then, ArcadeMachine contract gets approved to spend 19 ether and finally, ArcadeMachine contract tries to burn 19 ether by sending it to **address(0)**.
+We are given three files: ArcadeMachine.sol, Coin.sol, and Setup.sol. From the Setup contract we see we need at least 13.37 ether to get the flag. The constructor shows that 19 of the 20 ether is deposited by the Setup contract. Then the ArcadeMachine contract is approved to spend 19 ether and, finally, ArcadeMachine tries to burn those 19 ether by sending them to **address(0)**.
 
-Well, goal should be simple, we need to recover "burnt" 19 ether. After thorough investigation of the Coin.sol we can see a suspicious looking function which *permits* someone use someone else's ether (similar to *approve* function).
+The goal is simple: recover the “burnt” 19 ether. After digging through Coin.sol we find a suspicious-looking function that *permits* someone to use someone else's ether (similar to an *approve* function).
 
-<body class="bg">
-<pre class="chroma"><code class="solidity"><span class="line"><span class="cl"><span class="kd">function</span> <span class="nf">permit</span><span class="p">(</span>
-</span></span><span class="line"><span class="cl">  <span class="kt">address</span> <span class="n">owner</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">  <span class="kt">address</span> <span class="n">spender</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">  <span class="kt">uint256</span> <span class="n">value</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">  <span class="kt">uint256</span> <span class="n">deadline</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">  <span class="kt">uint8</span> <span class="n">v</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">  <span class="kt">bytes32</span> <span class="n">r</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">  <span class="kt">bytes32</span> <span class="n">s</span>
-</span></span><span class="line"><span class="cl"><span class="p">)</span> <span class="k">external</span> <span class="p">{</span>
-</span></span><span class="line"><span class="cl">  <span class="nb">require</span><span class="p">(</span><span class="nb">block</span><span class="p">.</span><span class="nb">timestamp</span> <span class="o">&lt;=</span> <span class="n">deadline</span><span class="p">,</span> <span class="s">&#34;signature expired&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">  <span class="kt">bytes32</span> <span class="n">structHash</span> <span class="o">=</span> <span class="nb">keccak256</span><span class="p">(</span>
-</span></span><span class="line"><span class="cl">    <span class="nb">abi</span><span class="p">.</span><span class="nb">encode</span><span class="p">(</span>
-</span></span><span class="line"><span class="cl">      <span class="n">PERMIT_TYPEHASH</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="n">owner</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="n">spender</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="n">value</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="n">nonces</span><span class="p">[</span><span class="n">owner</span><span class="p">]</span><span class="o">++</span><span class="p">,</span>
-</span></span><span class="line"><span class="cl">      <span class="n">deadline</span>
-</span></span><span class="line"><span class="cl">      <span class="p">)</span>
-</span></span><span class="line"><span class="cl">  <span class="p">);</span>
-</span></span><span class="line"><span class="cl">  <span class="kt">bytes32</span> <span class="n">h</span> <span class="o">=</span> <span class="nb">_hashTypedDataV4</span><span class="p">(</span><span class="n">structHash</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">  <span class="kt">address</span> <span class="n">signer</span> <span class="o">=</span> <span class="nb">ecrecover</span><span class="p">(</span><span class="n">h</span><span class="p">,</span> <span class="n">v</span><span class="p">,</span> <span class="n">r</span><span class="p">,</span> <span class="n">s</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">  <span class="nb">require</span><span class="p">(</span><span class="n">signer</span> <span class="o">==</span> <span class="n">owner</span><span class="p">,</span> <span class="s">&#34;invalid signer&#34;</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl">  <span class="n">allowance</span><span class="p">[</span><span class="n">owner</span><span class="p">][</span><span class="n">spender</span><span class="p">]</span> <span class="o">=</span> <span class="n">value</span><span class="p">;</span>
-</span></span><span class="line"><span class="cl">  <span class="n">emit</span> <span class="n">Approval</span><span class="p">(</span><span class="n">owner</span><span class="p">,</span> <span class="n">spender</span><span class="p">,</span> <span class="n">value</span><span class="p">);</span>
-</span></span><span class="line"><span class="cl"><span class="p">}</span></span></span></code></pre>
-</body>
+```solidity
+function permit(
+  address owner,
+  address spender,
+  uint256 value,
+  uint256 deadline,
+  uint8 v,
+  bytes32 r,
+  bytes32 s
+) external {
+  require(block.timestamp <= deadline, "signature expired");
+  bytes32 structHash = keccak256(
+    abi.encode(
+      PERMIT_TYPEHASH,
+      owner,
+      spender,
+      value,
+      nonces[owner]++,
+      deadline
+      )
+  );
+  bytes32 h = _hashTypedDataV4(structHash);
+  address signer = ecrecover(h, v, r, s);
+  require(signer == owner, "invalid signer");
+  allowance[owner][spender] = value;
+  emit Approval(owner, spender, value);
+}
+```
 
-This function basically just asks user to provide a signature (v, r, s) for the data, it then recovers the signer using **ecrecover** and checks that signer and owner are the same person. This all seems good, but there is one flaw in this code. If we take a look at what ecrecover returns, we will find that upon failure, ecrecover returns **0**. One may ask, yes but how does that help in this situation? Well, now we can act like we have data signed by **address(0)** and get approval on using **address(0)**'s funds. After this it becomes straightforward.
+This function asks the user to provide a signature (v, r, s) for the data, recovers the signer with **ecrecover**, and checks that the signer and owner match. That seems fine, but there is a flaw: on failure **ecrecover** returns **0**. How does that help? We can pretend we have data signed by **address(0)** and get approval to use **address(0)**’s funds. After that, the rest is straightforward.
 

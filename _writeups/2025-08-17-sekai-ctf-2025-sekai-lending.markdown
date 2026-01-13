@@ -12,7 +12,7 @@ exclude: false
 </div>
 
 # Introduction
-In this writeup I break down my solution to the `Sekai Lending` challenge from **SekaiCTF 2025**—a coin‑lending service built on the Sui blockchain with a subtle but critical design flaw. This was the first Sui challenge I’ve solved!
+In this writeup, I break down my solution to the `Sekai Lending` challenge from **SekaiCTF 2025**—a coin‑lending service built on the Sui blockchain with a subtle but critical design flaw. This was the first Sui challenge I’ve solved!
 
 TL;DR: Because `UserPosition` objects are not tied to any particular `SEKAI_LENDING` instance, we can liquidate a position in one pool and claim its reward from another, draining the original pool’s collateral.
 

@@ -9,11 +9,11 @@ exclude: false
 
 ## Challenge overview
 
-Challenge provides a contract called `HigherOrder` and gives us a goal to claim the title of the commander. In order to do that we must make `treasury` variable greater than `255`.
+The challenge provides a contract called `HigherOrder` and gives us a goal to claim the title of the commander. To do that we must make the `treasury` variable greater than `255`.
 
 ## Looking for Vulnerabilities
 
-There really isn't much that can be done when interacting with this contract. We can qury the variables (which gives us nothing) or we can call one of two existing functions. We are initially unable to call `claimLeadership` because it checks that `treasury` is greater than `255` (which it initially is not).
+There really isn't much that can be done when interacting with this contract. We can query the variables (which gives us nothing) or call one of two existing functions. We are initially unable to call `claimLeadership` because it checks that `treasury` is greater than `255` (which it is not at the start).
 
 ```solidity
 function claimLeadership() public {
@@ -22,7 +22,7 @@ function claimLeadership() public {
 }
 ```
 
-This leaves us with only one option, to try and somehow exploit `registerTreasury` function.
+This leaves us with only one option: try to exploit `registerTreasury`.
 
 ```solidity
 function registerTreasury(uint8) public {
@@ -32,10 +32,10 @@ function registerTreasury(uint8) public {
 }
 ```
 
-It uses solidity assembly to write to overwrite `treasury` variable. But, it also uses `calldata` in a wrong way. If we check what `calldataload` does we will get the following explanation:
+It uses Solidity assembly to overwrite the `treasury` variable, but it also uses `calldata` the wrong way. If we check what `calldataload` does we get the following explanation:
 * *reads a (u)int256 from message data*
 
-In other words, it returns **msg.data[i:i+32]**. This means that we can hand-craft the payload which would look something like this:
+In other words, it returns **msg.data[i:i+32]**. This means that we can hand-craft the payload to look like this:
 
 - 4 bytes of function selector for calling `claimLeadership`
 - `uint256(256)`

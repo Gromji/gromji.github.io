@@ -9,15 +9,15 @@ exclude: false
 
 ## Challenge overview
 
-Challenge gives us a smart contract which has three functions: `setAnimalAndSpin`, `changeAnimal` and `encodeAnimalName`. Main functionality of the contract is that it tries to compact animal name, next index and animal owner into one slot. It does so by extracting/setting specific bits in each slot.
+The challenge gives us a smart contract with three functions: `setAnimalAndSpin`, `changeAnimal`, and `encodeAnimalName`. Its main functionality is to compact the animal name, next index, and animal owner into one slot by extracting or setting specific bits in each slot.
 
-In my opinion, goal of the challenge seems a little bit blurry. Rule says that if you set and spin an animal it should not change. Initially, I thought maybe there is an animal set by somebody and I have to overwrite it but there is no animal at the start.
+In my opinion, the goal of the challenge is a little blurry. The rule says that if you set and spin an animal it should not change. Initially, I thought there might be an animal set by someone that I had to overwrite, but there is no animal at the start.
 
-In reality, we have to make it so that if `setAnimalAndSpin` is called with a specific animal name and then queried the same animal, returned value should have different animal name from what was initially passed as an argument.
+In reality, we have to make it so that if `setAnimalAndSpin` is called with a specific animal name and the same animal is queried later, the returned value should have a different name from what was initially passed.
 
 ## Exploitation
 
-After understanding what the goal is, exploitation is not that complex. Let's take a look at the following function:
+After understanding the goal, exploitation is not that complex. Let's take a look at the following function:
 
 ```solidity
 function setAnimalAndSpin(string calldata animal) external {
@@ -32,7 +32,7 @@ function setAnimalAndSpin(string calldata animal) external {
 }
 ```
 
-Here we can see that `nextCrateId` is extracted form the slot corresponding to `currentCrateId` and then slot corresponding to `nextCrateId` is being set. Now the assumption when calculating `carousel[nextCrateId] & ~NEXT_ID_MASK` is that `carousel[nextCrateId]` is zero. If we manage to break that assumption, whenever someone tries to set animal and sping the animal, name will get xord with some value. We can easily break this assumption by calling `changeAnimal` on whatever `nextCrateId` will be.
+Here we see that `nextCrateId` is extracted from the slot corresponding to `currentCrateId`, and then the slot corresponding to `nextCrateId` is set. The calculation `carousel[nextCrateId] & ~NEXT_ID_MASK` assumes `carousel[nextCrateId]` is zero. If we break that assumption, whenever someone sets an animal and spins it, the name will get XORed with some value. We can easily break this assumption by calling `changeAnimal` on whatever `nextCrateId` will be.
 
 ## Extra Remarks
 
@@ -54,4 +54,4 @@ function changeAnimal(string calldata animal, uint256 crateId) external {
 }
 ```
 
-This function also allows us to overflow into `NEXT_ID_MASK` bits of the slot, because it is missing `require(encodedAnimal <= uint256(type(uint80).max), AnimalNameTooLong());` (unlike `setAnimalAndSpin`). I'm not sure what the intention here was but the contract can be exploited without leveraging this.
+This function also allows us to overflow into the `NEXT_ID_MASK` bits of the slot because it is missing `require(encodedAnimal <= uint256(type(uint80).max), AnimalNameTooLong());` (unlike `setAnimalAndSpin`). I'm not sure what the intention was here, but the contract can be exploited without leveraging this.

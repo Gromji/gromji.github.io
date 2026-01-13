@@ -44,7 +44,7 @@ o+o \ / \0    ||   =====   ||    0/ \ / (=)
 We are given three solidity files: `Setup.sol`, `EldoriaGate.sol`, `EldoriaGateKernel.sol`.
 
 ## Setup.sol
-This Solidity file, as its name implies, is responsible for setting up contracts related to the challenge. Also, just like any other smart contract blockchain challenge, whether the instance is solved is checked through this contract.
+As the name implies, this Solidity file sets up the contracts for the challenge. Like most blockchain CTF setups, it also checks whether the instance is solved.
 
 ## EldoriaGate.sol
 
@@ -87,7 +87,7 @@ function checkUsurper(address _villager) external returns (bool) {
 }
 ```
 <pre style="color: #C72C41; display: flex; align-items: center; justify-content: center;">
- Villager has a usurper role if and only if {{ "roleBitMask" | code_wrap: "language_solidity" }} is set to 0 (1)
+ Villager has a usurper role if and only if {{ "roleBitMask" | code_wrap: "language_solidity" }} is set to 0
 </pre>
 
 ## EldoriaGateKernel.sol

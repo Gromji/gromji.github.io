@@ -13,8 +13,8 @@ exclude: false
 
 ## Challenge overview
 
-We are given a contract which does three things to the array: push, pop or assign. This contract is also `Ownable`, which means on top of the variables that it declares it also has `owner` variable to identify the owner (i.e. probably the creator) of the contract.
+We are given a contract that does three things to the array: push, pop, or assign. This contract is also `Ownable`, which means that, in addition to its own variables, it has an `owner` variable to identify the owner (i.e., probably the creator) of the contract.
 
 ## Looking for Vulnerabilities
 
-There is a pretty obvious underflow in the `retract` function, which means that since the length of the array gets treated as unsigned integer, decrementing it by one will make it a huge (2<sup>256</sup>) value. This gives us the opportunity give `revise` function a huge index and wrap around memory to overwrite variable at slot 0 (which contains both boolean variable `contract` and address of `owner` in the same slot). So all that's left is to calculate the start of the array (which is keccack hash of the address of the slot where the length of the array is stored), subtract from 2<sup>256</sup> and pass it to the `revise` function with the value of our desire (most likely our address).
+There is a pretty obvious underflow in the `retract` function. Because the length of the array is treated as an unsigned integer, decrementing it by one makes it huge (2<sup>256</sup>). This lets us give `revise` a huge index and wrap around memory to overwrite the variable at slot 0 (which contains both the boolean `contact` and the address of `owner` in the same slot). All that is left is to calculate the start of the array (the keccak hash of the address of the slot where the array length is stored), subtract from 2<sup>256</sup>, and pass it to `revise` with the value we want—most likely our address.
