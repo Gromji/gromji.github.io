@@ -6,7 +6,8 @@ permalink: /resume/
 
 # Career
 
-- **Jan 2026 – Present** — Security Auditor @ OtterSec — Auditing blockchain protocols and smart contracts for exploitable edge cases and delivering remediation guidance to engineering teams.
+- **Jan 2026 – **<span style="color:red">**Present**</span> — Security Auditor @ OtterSec — Auditing blockchain protocols and smart contracts for exploitable edge cases and delivering remediation guidance to engineering teams.
+- **Jul 2023 – **<span style="color:red">**Present**</span> — CTF Player @ [L3ak](https://www.l3ak.team/), a relatively new cybersecurity CTF team that rapidly rose to **13th worldwide and 2nd in the U.S.** in 2025, after ranking **21st globally and 3rd in the U.S.** in 2024.
 - **Aug 2024 – Jun 2024** — Security Researcher @ Arizona State University, SEFCOM — Researched operating-system security and analyzed exploitation vectors.
 - **May 2023 – Jun 2024** — Software Engineer @ AzRy — Built and maintained web infrastructure for a healthcare project.
 - **Mar 2022 – Jul 2022** — Teaching Assistant @ Free University of Tbilisi — Assisted with the Programming Abstractions course at the Free University of Tbilisi.
